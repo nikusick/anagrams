@@ -20,15 +20,14 @@ int main(int argc, char** argv) {
         }
         dictionaryFile.close();
 
-
         std::vector<std::vector<std::pair<std::string, int>>> result(1); // create result without permutations
         std::string line;
         while (line.empty()) {
             if (!std::getline(inputFile, line)) { std::cout << "File is empty!"; return 0; }
         }
         std::stringstream sLine(line);
+        std::vector<std::vector<std::pair<std::string, int>>> curVariants;
         while (sLine >> word) {
-            std::vector<std::vector<std::pair<std::string, int>>> curVariants;
             for (auto &&item: dictionary) {
                 if (std::is_permutation(item.first.begin(), item.first.end(), word.begin())
                 && word.size() == item.first.size()) { // important!
@@ -43,8 +42,8 @@ int main(int argc, char** argv) {
                 return 0;
             }
             result = curVariants;
+            curVariants.clear();
         }
-
 
         auto&& compareItems = [](std::vector<std::pair<std::string, int>>& item1, std::vector<std::pair<std::string, int>>& item2) {
             return std::accumulate(item1.begin(),
